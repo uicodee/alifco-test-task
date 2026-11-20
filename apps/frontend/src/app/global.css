@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --muted: #f4f4f5;
+  --muted-foreground: #67676f;
+  --subtle-foreground: #3f3f46;
+  --border: #ececec;
+  --control: #d4d4d8;
+  --card-shadow: 0 16px 40px rgba(17, 17, 17, 0.06);
+  --overlay: rgba(17, 17, 17, 0.4);
+
+  --brand: var(--color-sky-700);
+  --brand-solid: var(--color-sky-700);
+  --brand-solid-pressed: var(--color-sky-800);
+  --brand-foreground: #ffffff;
+
+  --success-bg: #f0fdf4;
+  --success-fg: #15803d;
+  --danger: #b91c1c;
+  --danger-bg: #fef2f2;
+  --danger-fg: #b91c1c;
+
+  color-scheme: light;
+}
+
+.dark {
+  --background: #0b0b0c;
+  --foreground: #f4f4f5;
+  --muted: #1c1c1f;
+  --muted-foreground: #a1a1aa;
+  --subtle-foreground: #d4d4d8;
+  --border: #2a2a2e;
+  --control: #3f3f46;
+  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --overlay: rgba(0, 0, 0, 0.6);
+
+  --brand: var(--color-sky-400);
+
+  --success-bg: rgba(22, 163, 74, 0.16);
+  --success-fg: #4ade80;
+  --danger: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.16);
+  --danger-fg: #f87171;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: ui-rounded, "SF Pro Rounded", var(--font-google-sans), "Google Sans", -apple-system, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border: var(--border);
+  --color-control: var(--control);
+  --color-overlay: var(--overlay);
+
+  --color-brand: var(--brand);
+  --color-brand-solid: var(--brand-solid);
+  --color-brand-solid-pressed: var(--brand-solid-pressed);
+  --color-brand-foreground: var(--brand-foreground);
+
+  --color-success-bg: var(--success-bg);
+  --color-success-fg: var(--success-fg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-fg: var(--danger-fg);
+
+  --shadow-card: var(--card-shadow);
+}
+
+@theme {
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-32: 32px;
+  --radius-pill: 999px;
+
+  --tracking-xs: -0.005em;
+  --tracking-sm: -0.008em;
+  --tracking-md: -0.012em;
+  --tracking-lg: -0.018em;
+  --tracking-xl: -0.022em;
+  --tracking-2xl: -0.028em;
+
+  --ease-spring: linear(0, 0.157 4.6%, 0.537 11.5%, 0.851 19.8%, 0.973 25.6%, 1.028 31.7%, 1.045 37.8%, 1.039 46.1%, 1.012 60.6%, 0.998 77.2%, 1);
+
+  --animate-fade-in: fade-in 200ms ease-out;
+  --animate-fade-out: fade-out 180ms ease-in forwards;
+  --animate-sheet-in: sheet-in 520ms var(--ease-spring);
+  --animate-sheet-out: sheet-out 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  --animate-dialog-in: dialog-in 420ms var(--ease-spring);
+  --animate-dialog-out: dialog-out 160ms ease-in forwards;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes sheet-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes sheet-out {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+  }
+  @keyframes dialog-in {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes dialog-out {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.96); }
+  }
+}
+
+@utility text-title {
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+}
+@utility text-section {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+@utility text-body {
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: -0.005em;
+}
+@utility text-caption {
+  font-size: 13px;
+  line-height: 18px;
+}
+@utility text-micro {
+  font-size: 12px;
+  line-height: 16px;
+}
+@utility pressable {
+  transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  transition-duration: 520ms;
+  transition-timing-function: var(--ease-spring);
+  -webkit-tap-highlight-color: transparent;
+  &:active {
+    transform: scale(0.96);
+    transition-duration: 120ms;
+    transition-timing-function: ease-out;
+  }
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a[href],
+  button:not(:disabled),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  input::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+.next
+out
+coverage
+.nx/cache
+.nx/workspace-data
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store

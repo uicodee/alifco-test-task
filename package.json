@@ -1,0 +1,30 @@
+{
+  "name": "alifco-auth",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "nx run-many -t serve dev -p backend frontend",
+    "backend": "nx run backend:serve",
+    "frontend": "nx run frontend:dev",
+    "build": "nx run-many -t build",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "api:generate": "nx run frontend:api:generate",
+    "db:up": "docker compose up -d postgres",
+    "migration:run": "npm -w backend run migration:run",
+    "migration:generate": "npm -w backend run migration:generate",
+    "graph": "nx graph"
+  },
+  "devDependencies": {
+    "@nx/js": "^22.7.0",
+    "@nx/node": "^22.7.0",
+    "@nx/webpack": "^22.7.0",
+    "nx": "22.7.0",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
+    "typescript": "~5.9.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

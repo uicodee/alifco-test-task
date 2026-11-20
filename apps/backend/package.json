@@ -1,0 +1,91 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "openapi": "ts-node -P ./tsconfig.app.json -r tsconfig-paths/register src/scripts/generate-openapi.ts",
+    "typeorm": "ts-node -P ./tsconfig.app.json -r tsconfig-paths/register ../../node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate -d ./src/shared/database/data-source.ts ./src/shared/database/migrations/schema/migration",
+    "migration:create": "npm run typeorm -- migration:create ./src/shared/database/migrations/schema/migration",
+    "migration:create:seed": "npm run typeorm -- migration:create ./src/shared/database/migrations/seeds/seed",
+    "migration:run": "npm run migration:run:schema && npm run migration:run:seeds",
+    "migration:run:schema": "npm run typeorm -- migration:run -d ./src/shared/database/data-source.ts",
+    "migration:run:seeds": "npm run typeorm -- migration:run -d ./src/shared/database/data-source.seeds.ts",
+    "migration:revert:schema": "npm run typeorm -- migration:revert -d ./src/shared/database/data-source.ts",
+    "migration:revert:seeds": "npm run typeorm -- migration:revert -d ./src/shared/database/data-source.seeds.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/platform-express": "^11.1.0",
+    "@nestjs/swagger": "^11.2.0",
+    "@nestjs/throttler": "^6.4.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.6.1",
+    "helmet": "^8.3.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.16.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.27",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/passport-jwt": "^4.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "nx": {
+    "tags": ["type:app", "scope:backend"],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": ["--node-env=production"],
+          "cwd": "apps/backend"
+        },
+        "configurations": {
+          "development": {
+            "args": ["--node-env=development"]
+          }
+        },
+        "outputs": ["{projectRoot}/dist"]
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": ["build"],
+        "options": {
+          "buildTarget": "backend:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "backend:build:development"
+          },
+          "production": {
+            "buildTarget": "backend:build:production"
+          }
+        }
+      },
+      "openapi": {
+        "cache": true,
+        "inputs": ["{projectRoot}/src/**/*.ts"],
+        "outputs": ["{projectRoot}/openapi.json"]
+      }
+    }
+  }
+}

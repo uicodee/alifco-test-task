@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:frontend"],
+  "implicitDependencies": ["backend"],
+  "targets": {
+    "dev": {
+      "continuous": true
+    },
+    "build": {
+      "dependsOn": ["api:generate"],
+      "outputs": ["{projectRoot}/.next", "!{projectRoot}/.next/cache"]
+    },
+    "typecheck": {
+      "dependsOn": ["api:generate"]
+    },
+    "api:generate": {
+      "dependsOn": [{ "projects": ["backend"], "target": "openapi" }],
+      "cache": true,
+      "inputs": ["{workspaceRoot}/apps/backend/openapi.json", "{projectRoot}/orval.config.ts"],
+      "outputs": ["{projectRoot}/src/shared/api/generated", "{projectRoot}/src/shared/api/model"]
+    }
+  }
+}
