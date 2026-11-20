@@ -23,7 +23,7 @@
 
 **Инфраструктура**
 - Монорепозиторий на npm workspaces + Nx 22
-- Docker, docker compose, Caddy (HTTPS через Let's Encrypt)
+- Docker, docker compose
 
 ## Структура
 
@@ -31,7 +31,6 @@
 apps/
   backend/    NestJS API, префикс /api
   frontend/   Next.js, проксирует /api/* на бэкенд
-deploy/       прод-конфиги и скрипт деплоя
 ```
 
 ## API
@@ -73,17 +72,3 @@ npm run migration:generate   # миграция по изменениям сущ
 npm run typecheck
 npm run lint
 ```
-
-## Деплой
-
-Сервер: `ubuntu@193.24.97.237`, стек лежит в `/opt/alifco`.
-
-```bash
-./deploy/deploy.sh
-```
-
-Скрипт собирает образы бэкенда и фронта под `linux/amd64`, передаёт их на сервер по SSH, поднимает `docker compose` (postgres, backend, frontend) и перезагружает Caddy. Миграции применяются при старте бэкенда.
-
-- Секреты лежат в `/opt/alifco/.env` на сервере, в репозиторий не попадают.
-- Конфиг Caddy: `deploy/alifco.caddy`, на сервере это `/etc/caddy/alifco.caddy`.
-- Callback-адреса провайдеров в проде: `https://alifco.duckdns.org/api/auth/oauth/<provider>/callback`.
